@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/main_bg_color"
+    tools:context=".MainActivity">
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="127dp"
+        android:layout_height="128dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/dimen73"
+        app:srcCompat="@drawable/logo" />
+
+    <EditText
+        android:id="@+id/edt_txt_username"
+        style="@style/EditTextStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/dimen205"
+        android:layout_marginLeft="@dimen/dimen40"
+        android:layout_marginRight="@dimen/dimen40"
+        android:drawableLeft="@drawable/username"
+        android:drawablePadding="@dimen/dimen6"
+        android:ems="10"
+        android:hint="Username"
+        android:inputType="textEmailAddress" />
+
+    <EditText
+        android:id="@+id/edt_txt_password"
+        style="@style/EditTextStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/dimen137"
+        android:layout_marginLeft="@dimen/dimen40"
+        android:layout_marginRight="@dimen/dimen40"
+        android:drawableLeft="@drawable/password"
+        android:drawablePadding="@dimen/dimen6"
+        android:ems="10"
+        android:hint="Password"
+        android:inputType="textPassword" />
+
+    <Button
+        android:id="@+id/btn_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/dimen64"
+        android:layout_marginLeft="@dimen/dimen40"
+        android:layout_marginRight="@dimen/dimen40"
+        android:background="@color/login_btn_color"
+        android:onClick="login"
+        android:text="Sign In"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text22" />
+
+    <TextView
+        android:id="@+id/txt_tc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="@dimen/dimen14"
+        android:layout_marginLeft="@dimen/dimen14"
+        android:layout_marginRight="@dimen/dimen14"
+        android:text="By signing in, you agree to out terms and conditions"
+        android:textSize="@dimen/text16" />
+</RelativeLayout>
