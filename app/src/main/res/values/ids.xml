@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item type="id" name="report"/>
+    <item type="id" name="calendar"/>
+    <item type="id" name="location"/>
+    <item type="id" name="alarm"/>
+    <item type="id" name="news"/>
+    <item type="id" name="medicine"/>
+</resources>
