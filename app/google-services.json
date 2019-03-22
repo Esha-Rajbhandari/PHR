@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "603969812441",
+    "firebase_url": "https://personalhealthrecord-d4bfc.firebaseio.com",
+    "project_id": "personalhealthrecord-d4bfc",
+    "storage_bucket": "personalhealthrecord-d4bfc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:603969812441:android:9cac3db13d032a01",
+        "android_client_info": {
+          "package_name": "com.example.esha.personalhealthrecord"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "603969812441-kre7nsrrsg2pqchs79s3tgsm7hfrhtiq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBTy1iy5SlvTCkwSovTb9TlbTLTzxPPVmU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
