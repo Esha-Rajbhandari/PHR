@@ -1,5 +1,7 @@
 package com.example.esha.personalhealthrecord;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -26,6 +28,11 @@ public class MedicineActivity extends AppCompatActivity implements NavigationVie
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        Intent intent = new Intent(Intent.ACTION_VIEW,
+                Uri.parse("http://www.google.com"));
+
+        startActivity(intent);
     }
 
     @Override

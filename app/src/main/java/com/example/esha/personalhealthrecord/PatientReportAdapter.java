@@ -6,10 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
-
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -32,8 +29,8 @@ public class PatientReportAdapter extends RecyclerView.Adapter<PatientReportAdap
 
     @Override
     public void onBindViewHolder(@NonNull ReportPlaceHolder reportPlaceHolder, int i) {
-        reportPlaceHolder.patientTextView.setText(mPatientRecordList.get(i).getPatientFirstName() + " " + mPatientRecordList.get(i).getPatientLastName());
-        reportPlaceHolder.testTextView.setText(mPatientRecordList.get(i).getMedicalTests());
+        reportPlaceHolder.patientTextView.setText(mPatientRecordList.get(i).getPatient_first_name() + " " + mPatientRecordList.get(i).getPatient_last_name());
+        reportPlaceHolder.testTextView.setText(mPatientRecordList.get(i).getMedical_tests());
     }
 
     @Override

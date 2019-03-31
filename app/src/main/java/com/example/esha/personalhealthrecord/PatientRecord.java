@@ -1,32 +1,32 @@
 package com.example.esha.personalhealthrecord;
 
 public class PatientRecord {
-    private String patientFirstName;
-    private String patientLastName;
+    private String patient_first_name;
+    private String patient_last_name;
     private String age;
     private String contact;
     private String gender;
-    private String doctorFirstName;
-    private String doctorLastName;
-    private String medicalTests;
-    private String medicalDiagnosis;
+    private String doctor_first_name;
+    private String doctor_last_name;
+    private String medical_tests;
+    private String medical_diagnosis;
     private String prescription;
-    private String treatmentDate;
+    private String treatment_date;
 
-    public String getPatientFirstName() {
-        return patientFirstName;
+    public String getPatient_first_name() {
+        return patient_first_name;
     }
 
-    public void setPatientFirstName(String patientFirstName) {
-        this.patientFirstName = patientFirstName;
+    public void setPatientFirstName(String patient_first_name) {
+        this.patient_first_name = patient_first_name;
     }
 
-    public String getPatientLastName() {
-        return patientLastName;
+    public String getPatient_last_name() {
+        return patient_last_name;
     }
 
-    public void setPatientLastName(String patientLastName) {
-        this.patientLastName = patientLastName;
+    public void setPatient_last_name(String patient_last_name) {
+        this.patient_last_name = patient_last_name;
     }
 
     public String getAge() {
@@ -53,36 +53,36 @@ public class PatientRecord {
         this.gender = gender;
     }
 
-    public String getDoctorFirstName() {
-        return doctorFirstName;
+    public String getDoctor_first_name() {
+        return doctor_first_name;
     }
 
-    public void setDoctorFirstName(String doctorFirstName) {
-        this.doctorFirstName = doctorFirstName;
+    public void setDoctor_first_name(String doctor_first_name) {
+        this.doctor_first_name = doctor_first_name;
     }
 
-    public String getDoctorLastName() {
-        return doctorLastName;
+    public String getDoctor_last_name() {
+        return doctor_last_name;
     }
 
-    public void setDoctorLastName(String doctorLastName) {
-        this.doctorLastName = doctorLastName;
+    public void setDoctor_last_name(String doctor_last_name) {
+        this.doctor_last_name = doctor_last_name;
     }
 
-    public String getMedicalTests() {
-        return medicalTests;
+    public String getMedical_tests() {
+        return medical_tests;
     }
 
-    public void setMedicalTests(String medicalTests) {
-        this.medicalTests = medicalTests;
+    public void setMedical_tests(String medical_tests) {
+        this.medical_tests = medical_tests;
     }
 
-    public String getMedicalDiagnosis() {
-        return medicalDiagnosis;
+    public String getMedical_diagnosis() {
+        return medical_diagnosis;
     }
 
-    public void setMedicalDiagnosis(String medicalDiagnosis) {
-        this.medicalDiagnosis = medicalDiagnosis;
+    public void setMedical_diagnosis(String medical_diagnosis) {
+        this.medical_diagnosis = medical_diagnosis;
     }
 
     public String getPrescription() {
@@ -93,11 +93,11 @@ public class PatientRecord {
         this.prescription = prescription;
     }
 
-    public String getTreatmentDate() {
-        return treatmentDate;
+    public String getTreatment_date() {
+        return treatment_date;
     }
 
-    public void setTreatmentDate(String treatmentDate) {
-        this.treatmentDate = treatmentDate;
+    public void setTreatment_date(String treatment_date) {
+        this.treatment_date = treatment_date;
     }
 }

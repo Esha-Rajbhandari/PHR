@@ -6,4 +6,5 @@
     <item type="id" name="alarm"/>
     <item type="id" name="news"/>
     <item type="id" name="medicine"/>
+    <item type="id" name="calendarView"/>
 </resources>
