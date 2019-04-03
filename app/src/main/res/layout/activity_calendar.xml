@@ -24,17 +24,28 @@
             android:background="#03a9f4"
             app:popupTheme="@style/AppTheme.PopupOverlay"/>
     </android.support.design.widget.AppBarLayout>
-
-    <com.riontech.calendar.CustomCalendar
-        android:id="@+id/customCalendar"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:endMonth="07"
-        app:endYear="2016"
-        app:startMonth="01"
-        app:startYear="2016" />
+        android:layout_height="match_parent">
 
-</LinearLayout>
+        <CalendarView
+            android:id="@+id/simpleCalendarView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:backgroundTint="@color/colorPrimaryDark"
+        android:src="@drawable/ic_my_icon"
+        android:layout_margin="16dp" />
+
+    </FrameLayout>
+    </LinearLayout>
+
     <android.support.design.widget.NavigationView
         android:id="@+id/calendar_nav_view"
         android:layout_width="wrap_content"
