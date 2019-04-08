@@ -1,5 +1,6 @@
 package com.example.esha.personalhealthrecord;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
@@ -13,6 +14,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 //import com.google.firebase.database.ChildEventListener;
 //import com.google.firebase.database.DataSnapshot;
@@ -22,6 +24,18 @@ import android.view.MenuItem;
 //import com.google.firebase.database.Query;
 //import com.google.firebase.database.ValueEventListener;
 
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+
 import java.util.ArrayList;
 
 public class ReportActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -30,6 +44,9 @@ public class ReportActivity extends AppCompatActivity implements NavigationView.
     PatientReportAdapter mReportAdapter;
     private RecyclerView recyclerView;
     private ArrayList<PatientRecord>  recordList;
+    private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,33 +71,46 @@ public class ReportActivity extends AppCompatActivity implements NavigationView.
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
 
         recyclerView.setLayoutManager(linearLayoutManager);
+        loadReport();
 
-//        Query query = mDatabaseReference.child("Patients_Records").orderByChild("patient_first_name").equalTo("Esha");
-//
-//        query.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                Log.i("kk", "onDataChange: llllllll");
-//                recordList = new ArrayList<PatientRecord>();
-//                for(DataSnapshot ds : dataSnapshot.getChildren()) {
-//                    PatientRecord record = ds.getValue(PatientRecord.class);
-//                    recordList.add(record);
-//                }
-//                mReportAdapter = new PatientReportAdapter(ReportActivity.this, recordList);
-//                recyclerView.setAdapter(mReportAdapter);
-//                recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
-//                mReportAdapter.notifyDataSetChanged();
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//                Log.d("lll", "onCancelled: "+databaseError.getMessage());            }
-//        });
+    }
 
+    public void loadReport(){
+        final String firebaseUser = firebaseAuth.getCurrentUser().getUid();
+        Log.i("ppp", "loadReport: "+firebaseUser);
+        Query dbRef = firebaseFirestore.collection("patient_record").whereEqualTo("patient_id", firebaseUser.trim());
+        FirestoreRecyclerOptions<PatientRecord> options =  new FirestoreRecyclerOptions.Builder<PatientRecord>()
+                .setQuery(dbRef, PatientRecord.class)
+                .build();
+        mReportAdapter = new PatientReportAdapter(options);
+        recyclerView.setAdapter(mReportAdapter);
+        recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
+       mReportAdapter.setOnItemClickListener(new PatientReportAdapter.OnItemClickListener() {
+           @Override
+           public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
+               Intent intent = new Intent(ReportActivity.this, ReportDetailActivity.class);
+               intent.putExtra("uid", firebaseUser);
+               startActivity(intent);
+               finish();
+           }
+       });
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         return false;
+    }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mReportAdapter.startListening();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mReportAdapter.stopListening();
     }
 }

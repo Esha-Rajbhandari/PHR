@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -11,9 +12,14 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -22,6 +28,8 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
 
     private RecyclerView mRecyclerView;
     private ArrayList<CardContent> mCardContent =new ArrayList<>();
+    private FirebaseAuth firebaseAuth;
+    private  FirebaseAuth.AuthStateListener firebaseAuthStateListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +38,9 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        checkAuthentication();
 
         DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -44,6 +55,21 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         mRecyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
         mRecyclerView.setLayoutManager(mGridLayoutManager);
         mRecyclerView.setAdapter(new CardContentAdapter(this,getCardContent()));
+    }
+
+    public void checkAuthentication(){
+        final FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+        firebaseAuthStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                Log.i("lll", "onAuthStateChanged: "+firebaseUser);
+
+                if (firebaseUser == null) {
+                    startActivity(new Intent(DashboardActivity.this, MainActivity.class));
+                    finish();
+                }
+            }
+        };
     }
 
     public void openActivity(Class newActivity){
@@ -104,6 +130,30 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        return false;
+        int id = item.getItemId();
+        if (id == R.id.nav_logout) {
+            firebaseAuth.signOut();
+            Intent intent  = new Intent(getApplicationContext(), MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            finish();
+        }
+        DrawerLayout drawer=findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.i("kkk", "onStart: lllll");
+        firebaseAuth.addAuthStateListener(firebaseAuthStateListener);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.i("kkk", "onStart: lllll");
+        firebaseAuth.addAuthStateListener(firebaseAuthStateListener);
     }
 }

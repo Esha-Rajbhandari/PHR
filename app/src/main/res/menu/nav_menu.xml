@@ -9,8 +9,8 @@
             android:id="@+id/nav_saved"
             android:title="Saved" />
         <item
-            android:id="@+id/nav_videos"
-            android:title="Videos" />
+            android:id="@+id/nav_logout"
+            android:title="Logout" />
         <item
             android:id="@+id/nav_hospitals"
             android:title="Hospitals" />

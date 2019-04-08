@@ -35,6 +35,7 @@ public class CalendarActivity extends AppCompatActivity implements NavigationVie
     private String eventTitle;
     private String eventBody;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,10 +71,10 @@ public class CalendarActivity extends AppCompatActivity implements NavigationVie
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
+
                 Toast.makeText(CalendarActivity.this, "Clicked", Toast.LENGTH_SHORT).show();
             }
         });
-
 
         DrawerLayout drawerLayout = findViewById(R.id.calendar_drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
