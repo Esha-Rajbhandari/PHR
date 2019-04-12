@@ -1,9 +1,12 @@
 package com.example.esha.personalhealthrecord;
 
+import java.util.List;
+
 public class News {
 
     private String news_title;
     private String news_body;
+    private List<String> images;
 
 
     public String getNews_title() {
@@ -20,5 +23,13 @@ public class News {
 
     public void setNews_body(String news_body) {
         this.news_body = news_body;
+    }
+
+    public List<String> getImages() {
+        return images;
+    }
+
+    public void setImages(List<String> images) {
+        this.images = images;
     }
 }

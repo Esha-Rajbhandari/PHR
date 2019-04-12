@@ -54,7 +54,7 @@ public class NewsActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void loadReport(){
-        Query dbRef = firebaseFirestore.collection("news");
+        final Query dbRef = firebaseFirestore.collection("news");
         FirestoreRecyclerOptions<News> options =  new FirestoreRecyclerOptions.Builder<News>()
                 .setQuery(dbRef, News.class)
                 .build();
@@ -64,9 +64,10 @@ public class NewsActivity extends AppCompatActivity implements NavigationView.On
        mNewsAdapter.setOnItemClickListener(new NewsAdapter.OnItemClickListener() {
            @Override
            public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
+
                Intent intent = new Intent(NewsActivity.this, NewsDetailActivity.class);
+                intent.putExtra("uid", documentSnapshot.getId());
                startActivity(intent);
-               finish();
            }
        });
     }

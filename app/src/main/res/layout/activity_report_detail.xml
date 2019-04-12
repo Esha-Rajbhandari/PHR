@@ -113,6 +113,14 @@
             android:textColor="@color/white"
             android:textSize="@dimen/txt20" />
 
+        <ImageView
+            android:id="@+id/patient_file"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="6dp"
+            android:adjustViewBounds="true"
+            android:scaleType="fitXY"/>
+
     </LinearLayout>
 
     <android.support.design.widget.NavigationView

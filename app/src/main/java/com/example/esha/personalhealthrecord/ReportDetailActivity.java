@@ -1,34 +1,45 @@
 package com.example.esha.personalhealthrecord;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.List;
 
 import javax.annotation.Nullable;
+
 
 public class ReportDetailActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private String firebaseUser;
@@ -39,7 +50,10 @@ public class ReportDetailActivity extends AppCompatActivity implements Navigatio
     private TextView genderField;
     private TextView dateField;
     private TextView testTextField;
+    private ImageView patientFileField;
     private String TAG = "Report Activity";
+    private String image;
+    private static final int PERMISSION_REQUEST_CODE = 1000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,10 +81,20 @@ public class ReportDetailActivity extends AppCompatActivity implements Navigatio
         genderField = findViewById(R.id.gender_field);
         dateField = findViewById(R.id.date_field);
         testTextField = findViewById(R.id.test_text_view);
+        patientFileField = findViewById(R.id.patient_file);
 
         loadData();
 
+        patientFileField.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                    imageDownload(getApplicationContext(), image);
+            }
+        });
+
     }
+
 
     public void loadData(){
         Query dbRef = firebaseFirestore.collection("patient_record").whereEqualTo("patient_id", firebaseUser.trim());
@@ -84,9 +108,58 @@ public class ReportDetailActivity extends AppCompatActivity implements Navigatio
                     genderField.setText("Gender: "+patientRecord.getGender());
                     dateField.setText("Treatment Date: "+patientRecord.getTreatment_date());
                     testTextField.setText(patientRecord.getMedical_tests());
+                    List<String> img = patientRecord.getPatient_file();
+                    image = img.get(0);
+                    Picasso.with(getApplicationContext()).load(image).into(patientFileField);
+
                 }
             }
         });
+    }
+
+    public static void imageDownload(Context ctx, String url){
+        Log.i("ppp", "imageDownload: "+url);
+        Picasso.with(ctx)
+                .load(url)
+                .into(getTarget("file"));
+    }
+
+    private static Target getTarget(final String url){
+        Target target = new Target(){
+
+            @Override
+            public void onBitmapLoaded(final Bitmap bitmap, Picasso.LoadedFrom from) {
+                new Thread(new Runnable() {
+
+                    @Override
+                    public void run() {
+
+                        File file = new File(Environment.getExternalStorageDirectory().getPath() + "/" + url+".jpg");
+                        try {
+                            file.createNewFile();
+                            FileOutputStream ostream = new FileOutputStream(file);
+                            bitmap.compress(Bitmap.CompressFormat.JPEG, 80, ostream);
+                            ostream.flush();
+                            ostream.close();
+                        } catch (IOException e) {
+                            Log.e("IOException", e.getLocalizedMessage());
+                        }
+                    }
+                }).start();
+
+            }
+
+            @Override
+            public void onBitmapFailed(Drawable errorDrawable) {
+
+            }
+
+            @Override
+            public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+            }
+        };
+        return target;
     }
 
     @Override

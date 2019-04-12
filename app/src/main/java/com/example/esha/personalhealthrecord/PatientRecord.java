@@ -1,5 +1,7 @@
 package com.example.esha.personalhealthrecord;
 
+import java.util.List;
+
 public class PatientRecord {
     private String patient_first_name;
     private String patient_last_name;
@@ -12,6 +14,9 @@ public class PatientRecord {
     private String medical_diagnosis;
     private String prescription;
     private String treatment_date;
+    private List<String> patient_file;
+
+
 
     public String getPatient_first_name() {
         return patient_first_name;
@@ -99,5 +104,13 @@ public class PatientRecord {
 
     public void setTreatment_date(String treatment_date) {
         this.treatment_date = treatment_date;
+    }
+
+    public List<String> getPatient_file() {
+        return patient_file;
+    }
+
+    public void setPatient_file(List<String> patient_file) {
+        this.patient_file = patient_file;
     }
 }
