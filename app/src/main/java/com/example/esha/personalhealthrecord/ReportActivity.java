@@ -89,7 +89,7 @@ public class ReportActivity extends AppCompatActivity implements NavigationView.
            @Override
            public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
                Intent intent = new Intent(ReportActivity.this, ReportDetailActivity.class);
-               intent.putExtra("uid", firebaseUser);
+               intent.putExtra("uid", documentSnapshot.getId());
                startActivity(intent);
                finish();
            }

@@ -89,7 +89,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
                 openActivity(MapsActivity.class);
                 break;
             case R.id.alarm:
-                openActivity(AlarmActivity.class);
+                openActivity(MedicalHistoryActivity.class);
                 break;
             case R.id.news:
                 openActivity(NewsActivity.class);

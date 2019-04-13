@@ -113,13 +113,20 @@
             android:textColor="@color/white"
             android:textSize="@dimen/txt20" />
 
-        <ImageView
-            android:id="@+id/patient_file"
-            android:layout_width="wrap_content"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/file_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </android.support.v7.widget.RecyclerView>
+
+        <Button
+            android:id="@+id/btn_add"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="6dp"
-            android:adjustViewBounds="true"
-            android:scaleType="fitXY"/>
+            android:text="ADD HISTORY"
+            android:layout_margin="@dimen/dimen6"
+            android:onClick="addHistory"/>
 
     </LinearLayout>
 

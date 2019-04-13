@@ -14,7 +14,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -22,7 +22,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".NewsDetailActivity"></activity>
+        <activity android:name=".MedicalDetailHistory"></activity>
+        <activity android:name=".NewsDetailActivity" />
         <activity android:name=".ReportDetailActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -67,18 +68,23 @@
         <activity
             android:name=".MedicineActivity"
             android:label="Medicine History" />
+        <activity android:name=".MedicalHistoryActivity"
+            android:label="Medical History"/>
 
         <service android:name=".services.MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
         <service android:name=".services.MyFirebaseInstanceIdService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
+        <provider
+            android:name=".data.RecordProvider"
+            android:authorities="com.example.esha.personalhealthrecord.data"
+            android:exported="false" />
     </application>
 
 </manifest>
