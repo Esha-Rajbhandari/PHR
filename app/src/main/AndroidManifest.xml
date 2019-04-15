@@ -22,9 +22,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MedicalDetailHistory"></activity>
-        <activity android:name=".NewsDetailActivity" />
-        <activity android:name=".ReportDetailActivity" />
+        <activity android:name=".activities.PrescriptionRefillActivity"  android:label="Prescription Refill"></activity>
+        <activity android:name=".activities.MedicalDetailHistoryActivity" />
+        <activity android:name=".activities.NewsDetailActivity" />
+        <activity android:name=".activities.ReportDetailActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -37,7 +38,7 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -45,31 +46,29 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MapsActivity"
+            android:name=".activities.MapsActivity"
             android:label="@string/title_activity_maps" />
         <activity
-            android:name=".DashboardActivity"
+            android:name=".activities.DashboardActivity"
             android:label="@string/app_name" />
         <activity
-            android:name=".ReportActivity"
+            android:name=".activities.ReportActivity"
             android:label="Medical Records" />
         <activity
-            android:name=".CalendarActivity"
+            android:name=".activities.CalendarActivity"
             android:label="Calendar" />
         <activity
-            android:name=".AlarmActivity"
+            android:name=".activities.AlarmActivity"
             android:label="Set Alarm" />
         <activity
-            android:name=".NewsActivity"
+            android:name=".activities.NewsActivity"
             android:label="News" />
         <activity
-            android:name=".LocationActivity"
+            android:name=".activities.LocationActivity"
             android:label="Location" />
         <activity
-            android:name=".MedicineActivity"
-            android:label="Medicine History" />
-        <activity android:name=".MedicalHistoryActivity"
-            android:label="Medical History"/>
+            android:name=".activities.MedicalHistoryActivity"
+            android:label="Medical History" />
 
         <service android:name=".services.MyFirebaseMessagingService">
             <intent-filter>
@@ -81,6 +80,7 @@
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
+
         <provider
             android:name=".data.RecordProvider"
             android:authorities="com.example.esha.personalhealthrecord.data"

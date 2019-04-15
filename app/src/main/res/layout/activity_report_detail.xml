@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".ReportDetailActivity"
+    tools:context=".activities.ReportDetailActivity"
     tools:openDrawer="start">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context=".ReportDetailActivity">
+        tools:context=".activities.ReportDetailActivity">
 
 
         <android.support.design.widget.AppBarLayout

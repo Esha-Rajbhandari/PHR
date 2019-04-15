@@ -6,7 +6,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.example.esha.personalhealthrecord.MainActivity;
+import com.example.esha.personalhealthrecord.activities.MainActivity;
 import com.example.esha.personalhealthrecord.app.Config;
 import com.example.esha.personalhealthrecord.utils.NotificationUtility;
 import com.google.firebase.messaging.FirebaseMessagingService;
