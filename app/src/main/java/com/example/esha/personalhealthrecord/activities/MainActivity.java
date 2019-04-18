@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         auth = FirebaseAuth.getInstance();
-        if(auth.getCurrentUser() != null){
+        if (auth.getCurrentUser() != null) {
             startActivity(new Intent(MainActivity.this, DashboardActivity.class));
             finish();
         }
@@ -52,8 +52,7 @@ public class MainActivity extends AppCompatActivity {
 
                 // checking for type intent filter
                 if (intent.getAction().equals(Config.REGISTRATION_COMPLETE)) {
-                    // gcm successfully registered
-                    // now subscribe to `global` topic to receive app wide notifications
+                    // gcm successfully                    // now subscribe to `global` topic to receive app wide notifications registered
                     FirebaseMessaging.getInstance().subscribeToTopic(Config.GLOBAL_TOPIC);
 
                     displayFirebaseRegId();
@@ -87,22 +86,22 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void initializeView(){
+    private void initializeView() {
         edtUsername = findViewById(R.id.edt_txt_username);
         edtPassword = findViewById(R.id.edt_txt_password);
     }
 
-    public void login(View view){
+    public void login(View view) {
 
         final String email = edtUsername.getText().toString();
         String password = edtPassword.getText().toString();
 
-        if(TextUtils.isEmpty(email)){
+        if (TextUtils.isEmpty(email)) {
             Toast.makeText(this, "Enter email", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        if(TextUtils.isEmpty(password)){
+        if (TextUtils.isEmpty(password)) {
             Toast.makeText(this, "Enter email", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -111,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
                 addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()){
+                        if (task.isSuccessful()) {
                             Intent loginIntent = new Intent(MainActivity.this, DashboardActivity.class);
                             startActivity(loginIntent);
                             finish();

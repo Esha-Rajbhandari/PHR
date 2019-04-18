@@ -58,12 +58,12 @@ public class NewsDetailActivity extends AppCompatActivity implements NavigationV
         imgView = findViewById(R.id.imageView3);
 
         Intent intent = getIntent();
-         newsId = intent.getStringExtra("uid");
+        newsId = intent.getStringExtra("uid");
 
         loadData();
     }
 
-    public void loadData(){
+    public void loadData() {
         Query dbRef = firebaseFirestore.collection("news").whereEqualTo(FieldPath.documentId(), newsId);
         dbRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override

@@ -1,9 +1,15 @@
 package com.example.esha.personalhealthrecord.activities;
 
-import android.app.Dialog;
+import android.app.LoaderManager;
+import android.app.ProgressDialog;
+import android.content.ContentUris;
+import android.content.CursorLoader;
 import android.content.Intent;
-import android.provider.CalendarContract;
+import android.content.Loader;
+import android.database.Cursor;
+import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -13,62 +19,32 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.CalendarView;
-import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.AdapterView;
+import android.widget.ListView;
 
 
+import com.example.esha.personalhealthrecord.Adapter.AlarmCursorAdapter;
 import com.example.esha.personalhealthrecord.R;
+import com.example.esha.personalhealthrecord.alarmdata.AlarmReminderContract;
+import com.example.esha.personalhealthrecord.alarmdata.AlarmReminderDbHelper;
 
-import java.util.Calendar;
 
+public class CalendarActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, LoaderManager.LoaderCallbacks<Cursor> {
+    private FloatingActionButton mAddReminderButton;
+    AlarmCursorAdapter mCursorAdapter;
+    AlarmReminderDbHelper alarmReminderDbHelper = new AlarmReminderDbHelper(this);
+    ListView reminderListView;
+    ProgressDialog prgDialog;
 
-public class CalendarActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-
-    private String eventTitle;
-    private String eventBody;
-
+    private static final int VEHICLE_LOADER = 0;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        CalendarView calendarView = findViewById(R.id.simpleCalendarView);
-
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final Dialog dialog = new Dialog(CalendarActivity.this);
-                dialog.setContentView(R.layout.custom_add_event);
-                Button btnAddEvent = dialog.findViewById(R.id.btnAddEvent);
-                btnAddEvent.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        EditText edtEventTitle = dialog.findViewById(R.id.event_title);
-                        EditText edtEventBody = dialog.findViewById(R.id.event_body);
-                        eventTitle = edtEventTitle.getText().toString();
-                        eventBody = edtEventBody.getText().toString();
-                        onAddEventClicked(eventTitle, eventBody);
-                        dialog.dismiss();
-                    }
-                });
-                dialog.show();
-            }
-        });
-
-        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-            @Override
-            public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
-
-                Toast.makeText(CalendarActivity.this, "Clicked", Toast.LENGTH_SHORT).show();
-            }
-        });
 
         DrawerLayout drawerLayout = findViewById(R.id.calendar_drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -78,31 +54,78 @@ public class CalendarActivity extends AppCompatActivity implements NavigationVie
         NavigationView navigationView = findViewById(R.id.calendar_nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        reminderListView = (ListView) findViewById(R.id.list);
+        View emptyView = findViewById(R.id.empty_view);
+        reminderListView.setEmptyView(emptyView);
+
+        mCursorAdapter = new AlarmCursorAdapter(this, null);
+        reminderListView.setAdapter(mCursorAdapter);
+
+        reminderListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+
+                Intent intent = new Intent(CalendarActivity.this, AddReminderActivity.class);
+
+                Uri currentVehicleUri = ContentUris.withAppendedId(AlarmReminderContract.AlarmReminderEntry.CONTENT_URI, id);
+
+                // Set the URI on the data field of the intent
+                intent.setData(currentVehicleUri);
+
+                startActivity(intent);
+
+            }
+        });
+
+
+        mAddReminderButton = (FloatingActionButton) findViewById(R.id.fab);
+
+        mAddReminderButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), AddReminderActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        getLoaderManager().initLoader(VEHICLE_LOADER, null, this);
     }
-
-    public void onAddEventClicked(String title, String desc) {
-        Intent intent = new Intent(Intent.ACTION_INSERT);
-        intent.setType("vnd.android.cursor.item/event");
-
-        Calendar cal = Calendar.getInstance();
-        long startTime = cal.getTimeInMillis();
-        long endTime = cal.getTimeInMillis() + 60 * 60 * 1000;
-
-        intent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, startTime);
-        intent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endTime);
-        intent.putExtra(CalendarContract.EXTRA_EVENT_ALL_DAY, true);
-
-        intent.putExtra(CalendarContract.Events.TITLE, title);
-        intent.putExtra(CalendarContract.Events.DESCRIPTION, desc);
-        intent.putExtra(CalendarContract.Events.EVENT_LOCATION, "My Guest House");
-        intent.putExtra(CalendarContract.Events.RRULE, "FREQ=YEARLY");
-
-        startActivity(intent);
-    }
-
 
     @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         return false;
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        String[] projection = {
+                AlarmReminderContract.AlarmReminderEntry._ID,
+                AlarmReminderContract.AlarmReminderEntry.KEY_TITLE,
+                AlarmReminderContract.AlarmReminderEntry.KEY_DATE,
+                AlarmReminderContract.AlarmReminderEntry.KEY_TIME,
+                AlarmReminderContract.AlarmReminderEntry.KEY_REPEAT,
+                AlarmReminderContract.AlarmReminderEntry.KEY_REPEAT_NO,
+                AlarmReminderContract.AlarmReminderEntry.KEY_REPEAT_TYPE,
+                AlarmReminderContract.AlarmReminderEntry.KEY_ACTIVE
+
+        };
+
+        return new CursorLoader(this,   // Parent activity context
+                AlarmReminderContract.AlarmReminderEntry.CONTENT_URI,   // Provider content URI to query
+                projection,             // Columns to include in the resulting Cursor
+                null,                   // No selection clause
+                null,                   // No selection arguments
+                null);                  // Default sort order
+
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        mCursorAdapter.swapCursor(data);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        mCursorAdapter.swapCursor(null);
     }
 }

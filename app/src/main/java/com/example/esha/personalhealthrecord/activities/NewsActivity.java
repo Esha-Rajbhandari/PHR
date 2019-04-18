@@ -53,23 +53,23 @@ public class NewsActivity extends AppCompatActivity implements NavigationView.On
         loadReport();
     }
 
-    public void loadReport(){
+    public void loadReport() {
         final Query dbRef = firebaseFirestore.collection("news");
-        FirestoreRecyclerOptions<News> options =  new FirestoreRecyclerOptions.Builder<News>()
+        FirestoreRecyclerOptions<News> options = new FirestoreRecyclerOptions.Builder<News>()
                 .setQuery(dbRef, News.class)
                 .build();
         mNewsAdapter = new NewsAdapter(options);
         recyclerView.setAdapter(mNewsAdapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
-       mNewsAdapter.setOnItemClickListener(new NewsAdapter.OnItemClickListener() {
-           @Override
-           public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
+        mNewsAdapter.setOnItemClickListener(new NewsAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
 
-               Intent intent = new Intent(NewsActivity.this, NewsDetailActivity.class);
+                Intent intent = new Intent(NewsActivity.this, NewsDetailActivity.class);
                 intent.putExtra("uid", documentSnapshot.getId());
-               startActivity(intent);
-           }
-       });
+                startActivity(intent);
+            }
+        });
     }
 
     @Override

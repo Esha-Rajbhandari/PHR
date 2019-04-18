@@ -11,8 +11,8 @@ import android.util.Log;
 
 public class RecordProvider extends ContentProvider {
 
-    private static final int RECORDS = 1;
-    private static final int RECORDS_ID = 2;
+    private static final int RECORDS = 101;
+    private static final int RECORDS_ID = 102;
     private static final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
     private RecordHelper rHelper;
 

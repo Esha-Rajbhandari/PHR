@@ -79,7 +79,7 @@ public class ReportDetailActivity extends AppCompatActivity implements Navigatio
 
         Intent intent = getIntent();
         firebaseUser = intent.getStringExtra("uid");
-        Log.i(TAG, "onCreate: "+intent);
+        Log.i(TAG, "onCreate: " + intent);
 
         nameField = findViewById(R.id.name_field);
         ageField = findViewById(R.id.age_field);
@@ -90,15 +90,15 @@ public class ReportDetailActivity extends AppCompatActivity implements Navigatio
         recyclerView = findViewById(R.id.file_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        FileAdapter fileAdapter = new FileAdapter(recyclerView,new ArrayList<String>(),new ArrayList<String>(),getApplicationContext());
+        FileAdapter fileAdapter = new FileAdapter(recyclerView, new ArrayList<String>(), new ArrayList<String>(), getApplicationContext());
         recyclerView.setAdapter(fileAdapter);
 
         loadData();
     }
 
 
-    public void loadData(){
-        Log.i(TAG, "loadData: "+FieldPath.documentId());
+    public void loadData() {
+        Log.i(TAG, "loadData: " + FieldPath.documentId());
         Query dbRef = firebaseFirestore.collection("patient_record").whereEqualTo(FieldPath.documentId(), firebaseUser.trim());
         dbRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
@@ -111,14 +111,14 @@ public class ReportDetailActivity extends AppCompatActivity implements Navigatio
                     age = patientRecord.getAge();
                     treatmentDate = patientRecord.getTreatment_date();
                     medicalTests = patientRecord.getMedical_tests();
-                    nameField.setText("Name: "+firstName + " " + lastName);
-                    ageField.setText("Age: "+ age);
-                    genderField.setText("Gender: "+ gender);
-                    dateField.setText("Treatment Date: "+ treatmentDate);
+                    nameField.setText("Name: " + firstName + " " + lastName);
+                    ageField.setText("Age: " + age);
+                    genderField.setText("Gender: " + gender);
+                    dateField.setText("Treatment Date: " + treatmentDate);
                     testTextField.setText(medicalTests);
                     List<String> img = patientRecord.getPatient_file();
-                    image= img.get(0);
-                    ((FileAdapter)recyclerView.getAdapter()).updateFile("file"+new Random().nextInt((100000 - 1) + 1) + 1, image);
+                    image = img.get(0);
+                    ((FileAdapter) recyclerView.getAdapter()).updateFile("file" + new Random().nextInt((100000 - 1) + 1) + 1, image);
                     // Picasso.with(getApplicationContext()).load(image).into(patientFileField);
                 }
             }

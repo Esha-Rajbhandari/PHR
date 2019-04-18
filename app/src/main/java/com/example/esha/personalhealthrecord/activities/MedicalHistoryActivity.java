@@ -29,6 +29,7 @@ public class MedicalHistoryActivity extends AppCompatActivity implements Navigat
     RecordCursorAdapter recordCursorAdapter;
 
     private static final int RECORD_LOADER = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,11 +71,11 @@ public class MedicalHistoryActivity extends AppCompatActivity implements Navigat
 
 
     @Override
-    public Loader<Cursor> onCreateLoader(int i,Bundle bundle) {
+    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         String[] projection = {
                 ReportContract.RECORD_ID,
                 ReportContract.COL_FIRST_NAME,
-                ReportContract.COL_MEDICAL_TESTS };
+                ReportContract.COL_MEDICAL_TESTS};
 
         return new CursorLoader(this,
                 ReportContract.CONTENT_URI,

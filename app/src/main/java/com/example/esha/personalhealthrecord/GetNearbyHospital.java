@@ -14,9 +14,6 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.List;
 
-/**
- * Created by navneet on 23/7/16.
- */
 public class GetNearbyHospital extends AsyncTask<Object, String, String> {
 
     String googlePlacesData;
@@ -43,14 +40,14 @@ public class GetNearbyHospital extends AsyncTask<Object, String, String> {
         Log.d("GooglePlacesReadTask", "onPostExecute Entered");
         List<HashMap<String, String>> nearbyPlacesList = null;
         DataParser dataParser = new DataParser();
-        nearbyPlacesList =  dataParser.parse(result);
+        nearbyPlacesList = dataParser.parse(result);
         ShowNearbyPlaces(nearbyPlacesList);
         Log.d("GooglePlacesReadTask", "onPostExecute Exit");
     }
 
     private void ShowNearbyPlaces(List<HashMap<String, String>> nearbyPlacesList) {
         for (int i = 0; i < nearbyPlacesList.size(); i++) {
-            Log.d("onPostExecute","Entered into showing locations");
+            Log.d("onPostExecute", "Entered into showing locations");
             MarkerOptions markerOptions = new MarkerOptions();
             HashMap<String, String> googlePlace = nearbyPlacesList.get(i);
             double lat = Double.parseDouble(googlePlace.get("lat"));

@@ -5,15 +5,17 @@
     android:layout_width="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".activities.CalendarActivity">
 
     <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar"
+        android:layout_alignParentTop="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay">
@@ -24,27 +26,39 @@
             android:background="#03a9f4"
             app:popupTheme="@style/AppTheme.PopupOverlay"/>
     </android.support.design.widget.AppBarLayout>
-    <FrameLayout
+    <ListView
+        android:id="@+id/list"
+        android:layout_below="@+id/app_bar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"/>
 
-        <CalendarView
-            android:id="@+id/simpleCalendarView"
+    <RelativeLayout
+        android:id="@+id/empty_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true">
+
+        <TextView
+            android:id="@+id/no_reminder_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            />
+            android:layout_centerInParent="true"
+            android:padding="16dp"
+            android:gravity="center"
+            android:text="@string/no_cardetails"/>
+    </RelativeLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="end|bottom"
-        android:backgroundTint="@color/colorPrimaryDark"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/ic_my_icon"
-        android:layout_margin="16dp" />
-
-    </FrameLayout>
-    </LinearLayout>
+        app:backgroundTint="@color/colorPrimary"
+        app:fabSize="normal"/>
+    </RelativeLayout>
 
     <android.support.design.widget.NavigationView
         android:id="@+id/calendar_nav_view"

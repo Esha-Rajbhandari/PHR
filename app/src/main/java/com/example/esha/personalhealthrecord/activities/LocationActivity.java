@@ -39,7 +39,7 @@ public class LocationActivity extends AppCompatActivity implements NavigationVie
         OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
-        LocationListener{
+        LocationListener {
 
     private GoogleMap mMap;
     double latitude;
@@ -74,9 +74,8 @@ public class LocationActivity extends AppCompatActivity implements NavigationVie
         if (!CheckGooglePlayServices()) {
             Log.d("onCreate", "Finishing test case since Google Play Services are not available");
             finish();
-        }
-        else {
-            Log.d("onCreate","Google Play Services available.");
+        } else {
+            Log.d("onCreate", "Google Play Services available.");
         }
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -90,8 +89,8 @@ public class LocationActivity extends AppCompatActivity implements NavigationVie
     private boolean CheckGooglePlayServices() {
         GoogleApiAvailability googleAPI = GoogleApiAvailability.getInstance();
         int result = googleAPI.isGooglePlayServicesAvailable(this);
-        if(result != ConnectionResult.SUCCESS) {
-            if(googleAPI.isUserResolvableError(result)) {
+        if (result != ConnectionResult.SUCCESS) {
+            if (googleAPI.isUserResolvableError(result)) {
                 googleAPI.getErrorDialog(this, result,
                         0).show();
             }
@@ -116,8 +115,8 @@ public class LocationActivity extends AppCompatActivity implements NavigationVie
         googlePlacesUrl.append("&radius=" + PROXIMITY_RADIUS);
         googlePlacesUrl.append("&type=" + nearbyPlace);
         googlePlacesUrl.append("&sensor=true");
-        googlePlacesUrl.append("&key=" +"AIzaSyBfS0JZkZg10uM3L-O07G_zz1C4c6q5CDM");
-        Log.d("getUrl", "kkk: "+googlePlacesUrl.toString());
+        googlePlacesUrl.append("&key=" + "AIzaSyBfS0JZkZg10uM3L-O07G_zz1C4c6q5CDM");
+        Log.d("getUrl", "kkk: " + googlePlacesUrl.toString());
         return (googlePlacesUrl.toString());
     }
 
@@ -169,9 +168,9 @@ public class LocationActivity extends AppCompatActivity implements NavigationVie
         //move map camera
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
-        Toast.makeText(LocationActivity.this,"Your Current Location", Toast.LENGTH_LONG).show();
+        Toast.makeText(LocationActivity.this, "Your Current Location", Toast.LENGTH_LONG).show();
 
-        Log.d("onLocationChanged", String.format("latitude:%.3f longitude:%.3f",latitude,longitude));
+        Log.d("onLocationChanged", String.format("latitude:%.3f longitude:%.3f", latitude, longitude));
 
         //stop location updates
         if (mGoogleApiClient != null) {
@@ -196,25 +195,25 @@ public class LocationActivity extends AppCompatActivity implements NavigationVie
                 buildGoogleApiClient();
                 mMap.setMyLocationEnabled(true);
             }
-        }
-        else {
+        } else {
             buildGoogleApiClient();
             mMap.setMyLocationEnabled(true);
         }
         mMap.clear();
         String url = getUrl(latitude, longitude, Hospital);
-        Log.i("lll", "onMapReady: "+latitude);
+        Log.i("lll", "onMapReady: " + latitude);
         Object[] DataTransfer = new Object[2];
         DataTransfer[0] = mMap;
         DataTransfer[1] = url;
         Log.d("onClick", url);
         GetNearbyHospital getNearbyPlacesData = new GetNearbyHospital();
         getNearbyPlacesData.execute(DataTransfer);
-        Toast.makeText(LocationActivity.this,"Nearby Hospitals", Toast.LENGTH_LONG).show();
+        Toast.makeText(LocationActivity.this, "Nearby Hospitals", Toast.LENGTH_LONG).show();
     }
 
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
-    public boolean checkLocationPermission(){
+
+    public boolean checkLocationPermission() {
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {

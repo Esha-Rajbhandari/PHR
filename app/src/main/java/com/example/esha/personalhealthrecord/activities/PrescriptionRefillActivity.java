@@ -2,6 +2,7 @@ package com.example.esha.personalhealthrecord.activities;
 
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.esha.personalhealthrecord.R;
@@ -31,6 +33,7 @@ public class PrescriptionRefillActivity extends AppCompatActivity implements Nav
     private EditText edtMedicine;
     private EditText edtMg;
     private EditText edtPrescribedBy;
+    private LinearLayout linearLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +58,7 @@ public class PrescriptionRefillActivity extends AppCompatActivity implements Nav
         edtMedicine = findViewById(R.id.medicine);
         edtMg = findViewById(R.id.dose);
         edtPrescribedBy = findViewById(R.id.prescribed_by);
+        linearLayout = findViewById(R.id.linearLayout);
 
     }
 
@@ -76,7 +80,9 @@ public class PrescriptionRefillActivity extends AppCompatActivity implements Nav
                 addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
+
                         Toast.makeText(PrescriptionRefillActivity.this, "Request Sent", Toast.LENGTH_SHORT).show();
+                        reset();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -85,6 +91,16 @@ public class PrescriptionRefillActivity extends AppCompatActivity implements Nav
             }
         });
 
+        reset();
+    }
 
+    public void reset() {
+        edtFullName.setText("");
+        edtAddress.setText("");
+        edtContact.setText("");
+        edtDiagnosis.setText("");
+        edtMedicine.setText("");
+        edtMg.setText("");
+        edtPrescribedBy.setText("");
     }
 }

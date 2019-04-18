@@ -15,6 +15,8 @@
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -23,7 +25,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".activities.PrescriptionRefillActivity"  android:label="Prescription Refill"></activity>
-        <activity android:name=".activities.MedicalDetailHistoryActivity" />
+        <activity android:name=".activities.MedicalDetailHistoryActivity" android:label="Medical History" />
         <activity android:name=".activities.NewsDetailActivity" />
         <activity android:name=".activities.ReportDetailActivity" />
         <!--
@@ -58,9 +60,6 @@
             android:name=".activities.CalendarActivity"
             android:label="Calendar" />
         <activity
-            android:name=".activities.AlarmActivity"
-            android:label="Set Alarm" />
-        <activity
             android:name=".activities.NewsActivity"
             android:label="News" />
         <activity
@@ -69,6 +68,8 @@
         <activity
             android:name=".activities.MedicalHistoryActivity"
             android:label="Medical History" />
+
+        <activity android:name=".activities.AddReminderActivity"/>
 
         <service android:name=".services.MyFirebaseMessagingService">
             <intent-filter>
@@ -80,11 +81,19 @@
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
+        <service android:name=".reminder.ReminderAlarmService"
+            android:exported="false"/>
 
         <provider
             android:name=".data.RecordProvider"
             android:authorities="com.example.esha.personalhealthrecord.data"
             android:exported="false" />
+        <provider
+            android:authorities="com.example.esha.personalhealthrecord.alarmdata"
+            android:name=".alarmdata.AlarmReminderProvider"
+            android:exported="false"/>
+
+
     </application>
 
 </manifest>

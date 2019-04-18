@@ -28,9 +28,9 @@ import java.util.ArrayList;
 public class DashboardActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private RecyclerView mRecyclerView;
-    private ArrayList<CardContent> mCardContent =new ArrayList<>();
+    private ArrayList<CardContent> mCardContent = new ArrayList<>();
     private FirebaseAuth firebaseAuth;
-    private  FirebaseAuth.AuthStateListener firebaseAuthStateListener;
+    private FirebaseAuth.AuthStateListener firebaseAuthStateListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,15 +55,15 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         GridLayoutManager mGridLayoutManager = new GridLayoutManager(DashboardActivity.this, 2);
         mRecyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
         mRecyclerView.setLayoutManager(mGridLayoutManager);
-        mRecyclerView.setAdapter(new CardContentAdapter(this,getCardContent()));
+        mRecyclerView.setAdapter(new CardContentAdapter(this, getCardContent()));
     }
 
-    public void checkAuthentication(){
+    public void checkAuthentication() {
         final FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
         firebaseAuthStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                Log.i("lll", "onAuthStateChanged: "+firebaseUser);
+                Log.i("lll", "onAuthStateChanged: " + firebaseUser);
 
                 if (firebaseUser == null) {
                     startActivity(new Intent(DashboardActivity.this, MainActivity.class));
@@ -73,13 +73,13 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         };
     }
 
-    public void openActivity(Class newActivity){
-        Intent intent=new Intent(DashboardActivity.this,newActivity);
+    public void openActivity(Class newActivity) {
+        Intent intent = new Intent(DashboardActivity.this, newActivity);
         startActivity(intent);
     }
 
-    public void openDetail(View view){
-        switch (view.getId()){
+    public void openDetail(View view) {
+        switch (view.getId()) {
             case R.id.report:
                 openActivity(ReportActivity.class);
                 break;
@@ -101,11 +101,11 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         }
     }
 
-    public ArrayList<CardContent> getCardContent(){
+    public ArrayList<CardContent> getCardContent() {
         mCardContent.add(new CardContent(R.drawable.report, "Report", R.id.report));
         mCardContent.add(new CardContent(R.drawable.calendar, "Calendar", R.id.calendar));
         mCardContent.add(new CardContent(R.drawable.location, "Location", R.id.location));
-        mCardContent.add(new CardContent(R.drawable.alarm, "Alarm", R.id.alarm));
+        mCardContent.add(new CardContent(R.drawable.report, "Medical History", R.id.alarm));
         mCardContent.add(new CardContent(R.drawable.news, "News", R.id.news));
         mCardContent.add(new CardContent(R.drawable.medicine, "Medicine", R.id.medicine));
         return mCardContent;
@@ -134,12 +134,12 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         int id = item.getItemId();
         if (id == R.id.nav_logout) {
             firebaseAuth.signOut();
-            Intent intent  = new Intent(getApplicationContext(), MainActivity.class);
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
             finish();
         }
-        DrawerLayout drawer=findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }

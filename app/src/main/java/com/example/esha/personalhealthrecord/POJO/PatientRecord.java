@@ -17,7 +17,6 @@ public class PatientRecord {
     private List<String> patient_file;
 
 
-
     public String getPatient_first_name() {
         return patient_first_name;
     }

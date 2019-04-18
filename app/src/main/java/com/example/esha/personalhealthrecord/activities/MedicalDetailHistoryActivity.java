@@ -29,6 +29,7 @@ public class MedicalDetailHistoryActivity extends AppCompatActivity implements N
     private TextView dateField;
     private TextView testTextField;
     private static final int EXISTING_LOADER = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,12 +57,10 @@ public class MedicalDetailHistoryActivity extends AppCompatActivity implements N
         Button historyBtn = findViewById(R.id.btn_add);
         historyBtn.setVisibility(View.GONE);
 
-        if(currentUri != null){
+        if (currentUri != null) {
             getLoaderManager().initLoader(EXISTING_LOADER, null, MedicalDetailHistoryActivity.this);
         }
     }
-
-
 
 
     @Override
@@ -78,7 +77,7 @@ public class MedicalDetailHistoryActivity extends AppCompatActivity implements N
                 ReportContract.COL_AGE,
                 ReportContract.COL_GENDER,
                 ReportContract.COL_TREATMENT_DATE,
-                ReportContract.COL_MEDICAL_TESTS };
+                ReportContract.COL_MEDICAL_TESTS};
 
         return new CursorLoader(this,
                 ReportContract.CONTENT_URI,
@@ -108,10 +107,10 @@ public class MedicalDetailHistoryActivity extends AppCompatActivity implements N
             String medicalTests = data.getString(testIndex);
 
             // Update the views on the screen with the values from the database
-            nameField.setText("Name: "+firstName+" "+lastName);
-            ageField.setText("Age: "+age);
-            genderField.setText("Gender: "+gender);
-            dateField.setText("Treatment date: "+treatmentDate);
+            nameField.setText("Name: " + firstName + " " + lastName);
+            ageField.setText("Age: " + age);
+            genderField.setText("Gender: " + gender);
+            dateField.setText("Treatment date: " + treatmentDate);
             testTextField.setText(medicalTests);
 
         }

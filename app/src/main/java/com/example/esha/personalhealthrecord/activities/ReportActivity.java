@@ -34,11 +34,11 @@ import com.google.firebase.firestore.Query;
 import java.util.ArrayList;
 
 public class ReportActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-//    private FirebaseDatabase mFirebaseDatabase;
+    //    private FirebaseDatabase mFirebaseDatabase;
 //    private DatabaseReference mDatabaseReference;
     PatientReportAdapter mReportAdapter;
     private RecyclerView recyclerView;
-    private ArrayList<PatientRecord>  recordList;
+    private ArrayList<PatientRecord> recordList;
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
 
@@ -70,25 +70,25 @@ public class ReportActivity extends AppCompatActivity implements NavigationView.
 
     }
 
-    public void loadReport(){
+    public void loadReport() {
         final String firebaseUser = firebaseAuth.getCurrentUser().getUid();
-        Log.i("ppp", "loadReport: "+firebaseUser);
+        Log.i("ppp", "loadReport: " + firebaseUser);
         Query dbRef = firebaseFirestore.collection("patient_record").whereEqualTo("patient_id", firebaseUser.trim());
-        FirestoreRecyclerOptions<PatientRecord> options =  new FirestoreRecyclerOptions.Builder<PatientRecord>()
+        FirestoreRecyclerOptions<PatientRecord> options = new FirestoreRecyclerOptions.Builder<PatientRecord>()
                 .setQuery(dbRef, PatientRecord.class)
                 .build();
         mReportAdapter = new PatientReportAdapter(options);
         recyclerView.setAdapter(mReportAdapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
-       mReportAdapter.setOnItemClickListener(new PatientReportAdapter.OnItemClickListener() {
-           @Override
-           public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
-               Intent intent = new Intent(ReportActivity.this, ReportDetailActivity.class);
-               intent.putExtra("uid", documentSnapshot.getId());
-               startActivity(intent);
-               finish();
-           }
-       });
+        mReportAdapter.setOnItemClickListener(new PatientReportAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
+                Intent intent = new Intent(ReportActivity.this, ReportDetailActivity.class);
+                intent.putExtra("uid", documentSnapshot.getId());
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 
     @Override
