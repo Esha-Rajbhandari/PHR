@@ -28,21 +28,24 @@ public class PatientReportAdapter extends FirestoreRecyclerAdapter<PatientRecord
         View reportView =  LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.patient_report_layout, viewGroup,false);
         return new ReportPlaceHolder(reportView);
     }
-
+//binds the data to the layout
     @Override
     protected void onBindViewHolder(@NonNull ReportPlaceHolder holder, int position, @NonNull PatientRecord model) {
-        holder.patientTextView.setText(model.getPatient_first_name());
-        holder.testTextView.setText(model.getMedical_tests());
+        holder.patientTextView.setText(model.getMedical_tests());
+        holder.testTextView.setText(model.getMedical_diagnosis());
+        holder.dateTextView.setText("Date: "+model.getTreatment_date());
     }
 
-
+//gets th elayout components
     public class ReportPlaceHolder extends RecyclerView.ViewHolder{
         private TextView patientTextView;
         private TextView testTextView;
+        private TextView dateTextView;
         public ReportPlaceHolder(@NonNull View itemView) {
             super(itemView);
             patientTextView = itemView.findViewById(R.id.patientTextView);
             testTextView = itemView.findViewById(R.id.testTextView);
+            dateTextView = itemView.findViewById(R.id.dateTextView);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

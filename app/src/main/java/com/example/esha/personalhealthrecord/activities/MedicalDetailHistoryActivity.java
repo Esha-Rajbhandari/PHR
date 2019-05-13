@@ -8,8 +8,10 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -20,6 +22,8 @@ import android.widget.TextView;
 
 import com.example.esha.personalhealthrecord.R;
 import com.example.esha.personalhealthrecord.data.ReportContract;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class MedicalDetailHistoryActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, LoaderManager.LoaderCallbacks<Cursor> {
     private Uri currentUri;
@@ -29,6 +33,8 @@ public class MedicalDetailHistoryActivity extends AppCompatActivity implements N
     private TextView dateField;
     private TextView testTextField;
     private static final int EXISTING_LOADER = 0;
+    private FirebaseAuth firebaseAuth;
+    private FirebaseAuth.AuthStateListener firebaseAuthStateListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +48,9 @@ public class MedicalDetailHistoryActivity extends AppCompatActivity implements N
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.setDrawerListener(toggle);
         toggle.syncState();
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        checkAuthentication();
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -61,13 +70,56 @@ public class MedicalDetailHistoryActivity extends AppCompatActivity implements N
             getLoaderManager().initLoader(EXISTING_LOADER, null, MedicalDetailHistoryActivity.this);
         }
     }
+//check the authentication
+    public void checkAuthentication() {
+        final FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+        firebaseAuthStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+
+                if (firebaseUser == null) {
+                    startActivity(new Intent(MedicalDetailHistoryActivity.this, MainActivity.class));
+                    finish();
+                }
+            }
+        };
+    }
 
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-        return false;
+
+        int id = menuItem.getItemId();
+        if (id == R.id.nav_logout) {
+            firebaseAuth.signOut();
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            finish();
+        }else if (id == R.id.nav_pressure) {
+            Intent intent = new Intent(getApplicationContext(), BloodPressureActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            finish();
+        }else if(id == R.id.nav_about){
+            displayAbout();
+        }
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 
+    protected void displayAbout() {
+        View messageView = getLayoutInflater().inflate(R.layout.about, null, false);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setIcon(R.drawable.logo);
+        builder.setTitle(R.string.app_name);
+        builder.setView(messageView);
+        builder.create();
+        builder.show();
+    }
+//load data from database
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         String[] projection = {
@@ -86,11 +138,11 @@ public class MedicalDetailHistoryActivity extends AppCompatActivity implements N
                 null,
                 null);
     }
-
+//after loading the data from sql database
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         if (data.moveToFirst()) {
-            // Find the columns of pet attributes that we're interested in
+            // Find the columns of report attributes that we're interested in
             int firstNameIndex = data.getColumnIndex(ReportContract.COL_FIRST_NAME);
             int lastNameIndex = data.getColumnIndex(ReportContract.COL_LAST_NAME);
             int ageIndex = data.getColumnIndex(ReportContract.COL_AGE);

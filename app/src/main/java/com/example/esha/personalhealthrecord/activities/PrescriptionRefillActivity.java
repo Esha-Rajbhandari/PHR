@@ -1,10 +1,13 @@
 package com.example.esha.personalhealthrecord.activities;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -17,6 +20,8 @@ import android.widget.Toast;
 import com.example.esha.personalhealthrecord.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -34,6 +39,8 @@ public class PrescriptionRefillActivity extends AppCompatActivity implements Nav
     private EditText edtMg;
     private EditText edtPrescribedBy;
     private LinearLayout linearLayout;
+    private FirebaseAuth firebaseAuth;
+    private FirebaseAuth.AuthStateListener firebaseAuthStateListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +54,9 @@ public class PrescriptionRefillActivity extends AppCompatActivity implements Nav
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.setDrawerListener(toggle);
         toggle.syncState();
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        checkAuthentication();
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -64,9 +74,39 @@ public class PrescriptionRefillActivity extends AppCompatActivity implements Nav
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-        return false;
+
+        int id = menuItem.getItemId();
+        if (id == R.id.nav_logout) {
+            firebaseAuth.signOut();
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            finish();
+        }else if (id == R.id.nav_pressure) {
+            Intent intent = new Intent(getApplicationContext(), BloodPressureActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            finish();
+        }else if(id == R.id.nav_about){
+            displayAbout();
+        }
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 
+    protected void displayAbout() {
+        View messageView = getLayoutInflater().inflate(R.layout.about, null, false);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setIcon(R.drawable.logo);
+        builder.setTitle(R.string.app_name);
+        builder.setView(messageView);
+        builder.create();
+        builder.show();
+    }
+
+//send the request refill to the firestore
     public void requestRefill(View view) {
         Map<String, Object> prescriptionRefill = new HashMap<>();
         prescriptionRefill.put("fullname", edtFullName.getText().toString().trim());
@@ -76,6 +116,7 @@ public class PrescriptionRefillActivity extends AppCompatActivity implements Nav
         prescriptionRefill.put("medicine", edtMedicine.getText().toString().trim());
         prescriptionRefill.put("dose", edtMg.getText().toString().trim());
         prescriptionRefill.put("prescribed_by", edtPrescribedBy.getText().toString().trim());
+        prescriptionRefill.put("user_id",firebaseAuth.getCurrentUser().getUid());
         firebaseFirestore.collection("medicine_refill").add(prescriptionRefill).
                 addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
@@ -93,7 +134,7 @@ public class PrescriptionRefillActivity extends AppCompatActivity implements Nav
 
         reset();
     }
-
+    //reset the form
     public void reset() {
         edtFullName.setText("");
         edtAddress.setText("");
@@ -103,4 +144,19 @@ public class PrescriptionRefillActivity extends AppCompatActivity implements Nav
         edtMg.setText("");
         edtPrescribedBy.setText("");
     }
-}
+
+    public void checkAuthentication() {
+        final FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+        firebaseAuthStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+
+                if (firebaseUser == null) {
+                    startActivity(new Intent(PrescriptionRefillActivity.this, MainActivity.class));
+                    finish();
+                }
+            }
+        };
+    }
+
+    }

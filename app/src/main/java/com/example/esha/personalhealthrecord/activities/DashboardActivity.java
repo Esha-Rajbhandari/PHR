@@ -7,6 +7,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -16,6 +17,7 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.example.esha.personalhealthrecord.Adapter.CardContentAdapter;
 import com.example.esha.personalhealthrecord.POJO.CardContent;
@@ -57,13 +59,12 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         mRecyclerView.setLayoutManager(mGridLayoutManager);
         mRecyclerView.setAdapter(new CardContentAdapter(this, getCardContent()));
     }
-
+//checks firebase authentication
     public void checkAuthentication() {
         final FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
         firebaseAuthStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                Log.i("lll", "onAuthStateChanged: " + firebaseUser);
 
                 if (firebaseUser == null) {
                     startActivity(new Intent(DashboardActivity.this, MainActivity.class));
@@ -84,7 +85,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
                 openActivity(ReportActivity.class);
                 break;
             case R.id.calendar:
-                openActivity(CalendarActivity.class);
+                openActivity(AlarmActivity.class);
                 break;
             case R.id.location:
                 openActivity(MapsActivity.class);
@@ -103,7 +104,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
 
     public ArrayList<CardContent> getCardContent() {
         mCardContent.add(new CardContent(R.drawable.report, "Report", R.id.report));
-        mCardContent.add(new CardContent(R.drawable.calendar, "Calendar", R.id.calendar));
+        mCardContent.add(new CardContent(R.drawable.alarm, "Alarm", R.id.calendar));
         mCardContent.add(new CardContent(R.drawable.location, "Location", R.id.location));
         mCardContent.add(new CardContent(R.drawable.report, "Medical History", R.id.alarm));
         mCardContent.add(new CardContent(R.drawable.news, "News", R.id.news));
@@ -139,9 +140,28 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
             startActivity(intent);
             finish();
         }
+        else if (id == R.id.nav_pressure) {
+            Intent intent = new Intent(getApplicationContext(), BloodPressureActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            finish();
+        }else if(id == R.id.nav_about){
+            displayAbout();
+        }
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    protected void displayAbout() {
+        View messageView = getLayoutInflater().inflate(R.layout.about, null, false);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setIcon(R.drawable.logo);
+        builder.setTitle(R.string.app_name);
+        builder.setView(messageView);
+        builder.create();
+        builder.show();
     }
 
     @Override

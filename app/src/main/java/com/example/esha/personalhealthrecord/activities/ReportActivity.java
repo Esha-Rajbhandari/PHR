@@ -3,8 +3,10 @@ package com.example.esha.personalhealthrecord.activities;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
@@ -13,6 +15,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 
 //import com.google.firebase.database.ChildEventListener;
 //import com.google.firebase.database.DataSnapshot;
@@ -27,6 +30,7 @@ import com.example.esha.personalhealthrecord.POJO.PatientRecord;
 import com.example.esha.personalhealthrecord.R;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -39,7 +43,8 @@ public class ReportActivity extends AppCompatActivity implements NavigationView.
     PatientReportAdapter mReportAdapter;
     private RecyclerView recyclerView;
     private ArrayList<PatientRecord> recordList;
-    private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    private FirebaseAuth firebaseAuth;
+    private FirebaseAuth.AuthStateListener firebaseAuthStateListener;
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
 
 
@@ -59,6 +64,9 @@ public class ReportActivity extends AppCompatActivity implements NavigationView.
         drawerLayout.setDrawerListener(toggle);
         toggle.syncState();
 
+        firebaseAuth = FirebaseAuth.getInstance();
+        checkAuthentication();
+
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -69,7 +77,21 @@ public class ReportActivity extends AppCompatActivity implements NavigationView.
         loadReport();
 
     }
+//check for the authentication
+    public void checkAuthentication() {
+        final FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+        firebaseAuthStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
 
+                if (firebaseUser == null) {
+                    startActivity(new Intent(ReportActivity.this, MainActivity.class));
+                    finish();
+                }
+            }
+        };
+    }
+//load the medical records of the user
     public void loadReport() {
         final String firebaseUser = firebaseAuth.getCurrentUser().getUid();
         Log.i("ppp", "loadReport: " + firebaseUser);
@@ -93,7 +115,36 @@ public class ReportActivity extends AppCompatActivity implements NavigationView.
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        return false;
+
+        int id = item.getItemId();
+        if (id == R.id.nav_logout) {
+            firebaseAuth.signOut();
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            finish();
+        }else if (id == R.id.nav_pressure) {
+            Intent intent = new Intent(getApplicationContext(), BloodPressureActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            finish();
+        }else if(id == R.id.nav_about){
+            displayAbout();
+        }
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+    protected void displayAbout() {
+        View messageView = getLayoutInflater().inflate(R.layout.about, null, false);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setIcon(R.drawable.logo);
+        builder.setTitle(R.string.app_name);
+        builder.setView(messageView);
+        builder.create();
+        builder.show();
     }
 
 

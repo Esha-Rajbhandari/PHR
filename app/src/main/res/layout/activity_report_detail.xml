@@ -42,6 +42,7 @@
                 android:layout_width="155dp"
                 android:layout_height="94dp"
                 android:layout_weight="1"
+                android:layout_marginRight="@dimen/dimen6"
                 app:srcCompat="@drawable/logo" />
 
             <LinearLayout
@@ -101,6 +102,8 @@
             android:id="@+id/test_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:padding="@dimen/dimen6"
             android:layout_margin="6dp" />
 
         <TextView
@@ -115,18 +118,26 @@
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/file_recycler_view"
+            android:padding="@dimen/dimen6"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
         </android.support.v7.widget.RecyclerView>
 
-        <Button
-            android:id="@+id/btn_add"
+        <android.support.design.widget.CoordinatorLayout
+            android:id="@+id/coordinatorLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="ADD HISTORY"
-            android:layout_margin="@dimen/dimen6"
-            android:onClick="addHistory"/>
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/btn_add"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="ADD HISTORY"
+                android:layout_margin="@dimen/dimen6"
+                android:onClick="addHistory"/>
+
+        </android.support.design.widget.CoordinatorLayout>
 
     </LinearLayout>
 

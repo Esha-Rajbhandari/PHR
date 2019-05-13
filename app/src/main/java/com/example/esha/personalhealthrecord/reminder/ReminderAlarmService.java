@@ -12,7 +12,7 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 
 import com.example.esha.personalhealthrecord.R;
-import com.example.esha.personalhealthrecord.activities.AddReminderActivity;
+import com.example.esha.personalhealthrecord.activities.AddAlarmActivity;
 import com.example.esha.personalhealthrecord.alarmdata.AlarmReminderContract;
 
 
@@ -44,7 +44,7 @@ public class ReminderAlarmService extends IntentService {
         Uri uri = intent.getData();
 
         //Display a notification to view the task details
-        Intent action = new Intent(this, AddReminderActivity.class);
+        Intent action = new Intent(this, AddAlarmActivity.class);
         action.setData(uri);
         PendingIntent operation = TaskStackBuilder.create(this)
                 .addNextIntentWithParentStack(action)

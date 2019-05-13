@@ -34,12 +34,12 @@ public class CardContentAdapter extends RecyclerView.Adapter<CardContentAdapter.
         holder.imgHealthResource.setImageResource(mCardContentList.get(position).getImgResource());
         holder.txtHealthResource.setText(mCardContentList.get(position).getText());
     }
-
+//populates the card with the data
     public CardContentAdapter(Context mContext, ArrayList<CardContent> mCardContentList) {
         this.mContext = mContext;
         this.mCardContentList = mCardContentList;
     }
-
+//get the total data count
     @Override
     public int getItemCount() {
 

@@ -32,7 +32,7 @@ public class AlarmCursorAdapter extends CursorAdapter {
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
         return LayoutInflater.from(context).inflate(R.layout.alarm_items, parent, false);
     }
-
+//sets the value to the layout elements
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
 

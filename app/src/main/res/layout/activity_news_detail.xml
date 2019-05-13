@@ -37,22 +37,61 @@
             android:adjustViewBounds="true"
             android:scaleType="fitXY" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/news_title_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/dimen4"
+                android:layout_weight="1"
+                android:text="News Title"
+                android:textColor="#000000"
+                android:textSize="26sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/news_date_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/dimen4"
+                android:textAlignment="textEnd"
+                android:text="Published: "
+                android:textStyle="italic"
+                android:textSize="16sp"
+                android:layout_weight="1"
+               />
+
+        </LinearLayout>
+
         <TextView
-            android:id="@+id/news_title_text"
+            android:id="@+id/news_author_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/dimen4"
-            android:text="News Title"
-            android:textSize="20sp"
-            android:textStyle="bold"/>
+            android:text="Published By: "
+            android:textStyle="italic"
+            android:textSize="18sp"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:background="#c0c0c0"/>
 
         <TextView
             android:id="@+id/news_body_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/dimen4"
-            android:text="News Desc"
-            android:textSize="16sp"/>
+            android:textColor="#272727"
+            android:fontFamily="sans-serif-condensed"
+            android:justificationMode="inter_word"
+            android:textSize="20sp"/>
     </LinearLayout>
 
     <android.support.design.widget.NavigationView

@@ -30,8 +30,9 @@ public class NewsAdapter extends FirestoreRecyclerAdapter<News, NewsAdapter.News
 
     @Override
     protected void onBindViewHolder(@NonNull NewsHolder holder, int position, @NonNull News model) {
+        String news = model.getNews_body();
         holder.newsTitle.setText(model.getNews_title());
-        holder.newsDesc.setText(model.getNews_body());
+        holder.newsDesc.setText(news.substring(0,50)+ "...");
     }
 
     @NonNull

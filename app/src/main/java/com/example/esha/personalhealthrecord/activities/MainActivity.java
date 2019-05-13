@@ -39,13 +39,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         auth = FirebaseAuth.getInstance();
-        if (auth.getCurrentUser() != null) {
-            startActivity(new Intent(MainActivity.this, DashboardActivity.class));
-            finish();
-        }
+
 
         initializeView();
-
+//recieve local broadcast
         mRegistrationBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -70,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
 
         displayFirebaseRegId();
     }
-
+//display firebase reg id to be used for web
     private void displayFirebaseRegId() {
         SharedPreferences pref = getApplicationContext().getSharedPreferences(Config.SHARED_PREF, 0);
         String regId = pref.getString("regId", null);
@@ -83,9 +80,13 @@ public class MainActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
+        if (auth.getCurrentUser() != null) {
+            startActivity(new Intent(MainActivity.this, DashboardActivity.class));
+            finish();
+        }
 
     }
-
+//initialize the view
     private void initializeView() {
         edtUsername = findViewById(R.id.edt_txt_username);
         edtPassword = findViewById(R.id.edt_txt_password);
@@ -114,6 +115,8 @@ public class MainActivity extends AppCompatActivity {
                             Intent loginIntent = new Intent(MainActivity.this, DashboardActivity.class);
                             startActivity(loginIntent);
                             finish();
+                        }else{
+                            Toast.makeText(MainActivity.this, ""+task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

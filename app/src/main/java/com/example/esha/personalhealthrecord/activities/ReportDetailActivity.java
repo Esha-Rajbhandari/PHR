@@ -4,9 +4,13 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -22,6 +26,8 @@ import com.example.esha.personalhealthrecord.Adapter.FileAdapter;
 import com.example.esha.personalhealthrecord.POJO.PatientRecord;
 import com.example.esha.personalhealthrecord.R;
 import com.example.esha.personalhealthrecord.data.ReportContract;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -58,6 +64,9 @@ public class ReportDetailActivity extends AppCompatActivity implements Navigatio
     private String medicalTests;
     private String patientFile;
     private static final int PERMISSION_REQUEST_CODE = 1000;
+    private FirebaseAuth firebaseAuth;
+    private FirebaseAuth.AuthStateListener firebaseAuthStateListener;
+    private CoordinatorLayout coordinatorLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,12 +83,17 @@ public class ReportDetailActivity extends AppCompatActivity implements Navigatio
         drawerLayout.setDrawerListener(toggle);
         toggle.syncState();
 
+        firebaseAuth = FirebaseAuth.getInstance();
+        checkAuthentication();
+
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         Intent intent = getIntent();
         firebaseUser = intent.getStringExtra("uid");
         Log.i(TAG, "onCreate: " + intent);
+
+        coordinatorLayout = findViewById(R.id.coordinatorLayout);
 
         nameField = findViewById(R.id.name_field);
         ageField = findViewById(R.id.age_field);
@@ -95,8 +109,21 @@ public class ReportDetailActivity extends AppCompatActivity implements Navigatio
 
         loadData();
     }
+//check for authentication
+    public void checkAuthentication() {
+        final FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+        firebaseAuthStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
 
-
+                if (firebaseUser == null) {
+                    startActivity(new Intent(ReportDetailActivity.this, MainActivity.class));
+                    finish();
+                }
+            }
+        };
+    }
+//load the data on real time and display it to the users
     public void loadData() {
         Log.i(TAG, "loadData: " + FieldPath.documentId());
         Query dbRef = firebaseFirestore.collection("patient_record").whereEqualTo(FieldPath.documentId(), firebaseUser.trim());
@@ -125,54 +152,37 @@ public class ReportDetailActivity extends AppCompatActivity implements Navigatio
         });
     }
 
-//    public static void imageDownload(Context ctx, String url){
-//        Log.i("ppp", "imageDownload: "+url);
-//        Picasso.with(ctx)
-//                .load(url)
-//                .into(getTarget("file"));
-//    }
-//
-//    private static Target getTarget(final String url){
-//        Target target = new Target(){
-//
-//            @Override
-//            public void onBitmapLoaded(final Bitmap bitmap, Picasso.LoadedFrom from) {
-//                new Thread(new Runnable() {
-//
-//                    @Override
-//                    public void run() {
-//
-//                        File file = new File(Environment.getExternalStorageDirectory().getPath() + "/" + url+".pdf");
-//                        try {
-//                            file.createNewFile();
-//                            FileOutputStream ostream = new FileOutputStream(file);
-//                            bitmap.compress(Bitmap.CompressFormat.JPEG, 80, ostream);
-//                            ostream.flush();
-//                            ostream.close();
-//                        } catch (IOException e) {
-//                            Log.e("IOException", e.getLocalizedMessage());
-//                        }
-//                    }
-//                }).start();
-//
-//            }
-//
-//            @Override
-//            public void onBitmapFailed(Drawable errorDrawable) {
-//
-//            }
-//
-//            @Override
-//            public void onPrepareLoad(Drawable placeHolderDrawable) {
-//
-//            }
-//        };
-//        return target;
-//    }
-
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-        return false;
+        int id = menuItem.getItemId();
+        if (id == R.id.nav_logout) {
+            firebaseAuth.signOut();
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            finish();
+        }else if (id == R.id.nav_pressure) {
+            Intent intent = new Intent(getApplicationContext(), BloodPressureActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            finish();
+        }else if(id == R.id.nav_about){
+            displayAbout();
+        }
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+    protected void displayAbout() {
+        View messageView = getLayoutInflater().inflate(R.layout.about, null, false);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setIcon(R.drawable.logo);
+        builder.setTitle(R.string.app_name);
+        builder.setView(messageView);
+        builder.create();
+        builder.show();
     }
 
     public void addHistory(View view) {
@@ -186,5 +196,8 @@ public class ReportDetailActivity extends AppCompatActivity implements Navigatio
         values.put(ReportContract.COL_PATIENT_FILE, image);
 
         Uri newUri = getContentResolver().insert(ReportContract.CONTENT_URI, values);
+
+        Snackbar snackbar1 = Snackbar.make(coordinatorLayout, "History Added", Snackbar.LENGTH_SHORT);
+        snackbar1.show();
     }
 }

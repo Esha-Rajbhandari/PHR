@@ -28,9 +28,9 @@ public class AlarmReminderProvider extends ContentProvider {
 
     static {
 
-        sUriMatcher.addURI(AlarmReminderContract.CONTENT_AUTHORITY, AlarmReminderContract.PATH_VEHICLE, REMINDER);
+        sUriMatcher.addURI(AlarmReminderContract.CONTENT_AUTHORITY, AlarmReminderContract.PATH_ALARM, REMINDER);
 
-        sUriMatcher.addURI(AlarmReminderContract.CONTENT_AUTHORITY, AlarmReminderContract.PATH_VEHICLE + "/#", REMINDER_ID);
+        sUriMatcher.addURI(AlarmReminderContract.CONTENT_AUTHORITY, AlarmReminderContract.PATH_ALARM + "/#", REMINDER_ID);
 
     }
 
@@ -116,7 +116,7 @@ public class AlarmReminderProvider extends ContentProvider {
         return ContentUris.withAppendedId(uri, id);
     }
 
-
+//discards the reminder set by the user
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
 
@@ -144,7 +144,7 @@ public class AlarmReminderProvider extends ContentProvider {
 
         return rowsDeleted;
     }
-
+//updates the data set by the user and returns the updated value
     @Override
     public int update(Uri uri, ContentValues contentValues, String selection,
                       String[] selectionArgs) {

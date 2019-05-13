@@ -6,8 +6,9 @@ public class News {
 
     private String news_title;
     private String news_body;
+    private String date_published;
+    private String author;
     private List<String> images;
-
 
     public String getNews_title() {
         return news_title;
@@ -31,5 +32,21 @@ public class News {
 
     public void setImages(List<String> images) {
         this.images = images;
+    }
+
+    public String getDate_published() {
+        return date_published;
+    }
+
+    public void setDate_published(String date_published) {
+        this.date_published = date_published;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
     }
 }

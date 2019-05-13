@@ -28,7 +28,7 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.FileViewHolder
         this.url = url;
         this.mContext = mContext;
     }
-
+//update file of the user
     public void updateFile(String fileName, String urls){
         Log.i("ooo", "updateFile: "+fileName+"   "+urls);
         items.add(fileName+".pdf");
@@ -48,7 +48,7 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.FileViewHolder
         fileViewHolder.fileTextView.setText(items.get(i));
         Log.i("ooo", "onBindViewHolder: "+items.get(i));
     }
-
+//gets the total data count
     @Override
     public int getItemCount() {
         return items.size();

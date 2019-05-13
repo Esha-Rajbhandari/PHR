@@ -98,7 +98,7 @@ public class LocationActivity extends AppCompatActivity implements NavigationVie
         }
         return true;
     }
-
+//connects to the google api client to use the api
     protected synchronized void buildGoogleApiClient() {
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
@@ -267,14 +267,13 @@ public class LocationActivity extends AppCompatActivity implements NavigationVie
 
                 } else {
 
-                    // Permission denied, Disable the functionality that depends on this permission.
+                    //When permission is denied.
                     Toast.makeText(this, "permission denied", Toast.LENGTH_LONG).show();
                 }
                 return;
             }
 
-            // other 'case' lines to check for other permissions this app might request.
-            // You can add here other case statements according to your requirement.
+
         }
     }
 }
